@@ -3,16 +3,14 @@
 
 #include "common.h"
 
-typedef int ElementType;
-
-typedef struct tagNode {
+typedef struct Linked_Node {
     ElementType Data;
-    struct tagNode *PrevNode;
-    struct tagNode *NextNode;
-} Node;
+    struct Linked_Node *PrevNode;
+    struct Linked_Node *NextNode;
+} Linked_Node;
 
 typedef struct {
-    Node* Head;
+    Linked_Node* Head;
     size_t Count;
 } LinkedList;
 

@@ -1,7 +1,7 @@
 #include "linked_list.h"
 
-static Node* CreateNode(ElementType data) {
-    Node* new_node = (Node*)malloc(sizeof(Node));
+static Linked_Node* CreateNode(ElementType data) {
+    Linked_Node* new_node = (Linked_Node*)malloc(sizeof(Linked_Node));
 
     new_node->Data = data;
     // 단순 및 더블에서
@@ -33,12 +33,12 @@ void LL_Destroy(LinkedList* list) {
 }
 
 void LL_Clear(LinkedList* list) {
-    if (!list) return;
+    if (!list || !list->Head) return;
 
-    Node* current = list->Head;
+    Linked_Node* current = list->Head;
 
     do {
-        Node* next = current->NextNode;
+        Linked_Node* next = current->NextNode;
         free(current);
         current = next;
     } while (current && current != list->Head);
@@ -50,13 +50,13 @@ void LL_Clear(LinkedList* list) {
 ErrorCode LL_Append(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
-    Node* tail = CreateNode(data);
+    Linked_Node* tail = CreateNode(data);
     if (!tail) return ERROR_MEMORY_ALLOCATION;
 
     if (list->Head == NULL) {
         list->Head = tail;
     } else {
-        Node* current = list->Head;
+        Linked_Node* current = list->Head;
         // 단순 및 더블에서
         // while (current->NextNode) {
         //     current = current->NextNode;
@@ -65,9 +65,9 @@ ErrorCode LL_Append(LinkedList* list, ElementType data) {
         // current->NextNode = tail;
 
         // 환형에서
-        current->PrevNode->NextNode = tail;
-        tail->NextNode = current;
         tail->PrevNode = current->PrevNode;
+        tail->NextNode = current;
+        current->PrevNode->NextNode = tail;
         current->PrevNode = tail;
     }
 
@@ -79,12 +79,12 @@ ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Node* current = list->Head;
+    Linked_Node* current = list->Head;
     for (size_t i = 0; i < position; i++) {
         current = current->NextNode;
     }
 
-    Node* new_node = CreateNode(data);
+    Linked_Node* new_node = CreateNode(data);
     if (!new_node) return ERROR_MEMORY_ALLOCATION;
 
     new_node->PrevNode = current;
@@ -99,14 +99,20 @@ ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
 ErrorCode LL_InsertHead(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
-    Node* head = CreateNode(data);
+    Linked_Node* head = CreateNode(data);
     if (!head) return ERROR_MEMORY_ALLOCATION;
 
-    list->Head->PrevNode = head;
-    head->NextNode = list->Head;
-    list->Head = head;
-    list->Count++;
+    if(list->Head == NULL) {
+        list->Head = head;
+    }else {
+        head->NextNode = list->Head;
+        head->PrevNode = list->Head->PrevNode;
+        list->Head->PrevNode->NextNode = head;
+        list->Head->PrevNode = head;
+        list->Head = head;
+    }
 
+    list->Count++;
     return SUCCESS;
 }
 
@@ -114,7 +120,7 @@ ErrorCode LL_Remove(LinkedList* list, size_t position) {
     if (!list || !list->Head) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Node* to_remove = list->Head;
+    Linked_Node* to_remove = list->Head;
 
     if (position == 0) {
         // 단순 및 더블에서
@@ -124,7 +130,7 @@ ErrorCode LL_Remove(LinkedList* list, size_t position) {
         if (list->Count == 1) {
             list->Head = NULL;
         } else {
-            Node* tail = list->Head->PrevNode;
+            Linked_Node* tail = list->Head->PrevNode;
             list->Head = list->Head->NextNode;
             list->Head->PrevNode = tail;
             tail->NextNode = list->Head;
@@ -146,7 +152,7 @@ ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_dat
     if (!list || !out_data) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Node* current = list->Head;
+    Linked_Node* current = list->Head;
     for (size_t i = 0; i < position; i++) {
         current = current->NextNode;
     }
@@ -170,7 +176,7 @@ void LL_Print(const LinkedList* list) {
     }
 
     printf("리스트 내용: ");
-    Node* current = list->Head;
+    Linked_Node* current = list->Head;
     do {
         printf("%d -> ", current->Data);
         current = current->NextNode;

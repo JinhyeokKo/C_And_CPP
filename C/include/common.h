@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <assert.h>
 
+typedef int ElementType;
+
 // 에러 코드 정의
 typedef enum {
     SUCCESS = 0,

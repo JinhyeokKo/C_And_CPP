@@ -1,8 +1,8 @@
-#include "menu_handler.h"
+#include "linked_list_menu_handler.h"
 #include "input_handler.h"
 
-void Menu_DisplayOptions(void) {
-    printf("\n=== 링크드 리스트 관리 프로그램 ===\n");
+void LL_Menu_DisplayOptions(void) {
+    printf("\n=== 연결 리스트 관리 프로그램 ===\n");
     printf("1. 노드 추가 (끝)\n");
     printf("2. 특정 위치 뒤에 노드 추가\n");
     printf("3. 노드 추가 (머리)\n");
@@ -15,7 +15,7 @@ void Menu_DisplayOptions(void) {
     printf("===============================\n");
 }
 
-ErrorCode Menu_ProcessChoice(LinkedList* list, MenuChoice choice) {
+ErrorCode LL_Menu_ProcessChoice(LinkedList* list, LL_MenuChoice choice) {
     if (!list) return ERROR_INVALID_PARAMETER;
     
     int value, position;

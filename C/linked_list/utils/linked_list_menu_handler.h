@@ -14,9 +14,9 @@ typedef enum {
     MENU_GET_COUNT,
     MENU_PRINT_ALL,
     MENU_CLEAR
-} MenuChoice;
+} LL_MenuChoice;
 
-void Menu_DisplayOptions(void);
-ErrorCode Menu_ProcessChoice(LinkedList* list, MenuChoice choice);
+void LL_Menu_DisplayOptions(void);
+ErrorCode LL_Menu_ProcessChoice(LinkedList* list, LL_MenuChoice choice);
 
 #endif // MENU_HANDLER_H
