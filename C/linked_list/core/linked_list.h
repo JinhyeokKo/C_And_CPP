@@ -17,20 +17,20 @@ typedef struct {
 } LinkedList;
 
 // 생성자/소멸자
-LinkedList* SLL_Create(void);
-void SLL_Destroy(LinkedList* list);
+LinkedList* LL_Create(void);
+void LL_Destroy(LinkedList* list);
 
 // 기본 연산
-ErrorCode SLL_Append(LinkedList* list, ElementType data);
-ErrorCode SLL_InsertAfter(LinkedList* list, size_t position, ElementType data);
-ErrorCode SLL_InsertHead(LinkedList* list, ElementType data);
-ErrorCode SLL_Remove(LinkedList* list, size_t position);
-ErrorCode SLL_GetAt(const LinkedList* list, size_t position, ElementType* out_data);
-size_t SLL_GetCount(const LinkedList* list);
+ErrorCode LL_Append(LinkedList* list, ElementType data);
+ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data);
+ErrorCode LL_InsertHead(LinkedList* list, ElementType data);
+ErrorCode LL_Remove(LinkedList* list, size_t position);
+ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_data);
+size_t LL_GetCount(const LinkedList* list);
 
 // 유틸리티 함수
-bool SLL_IsEmpty(const LinkedList* list);
-void SLL_Clear(LinkedList* list);
-void SLL_Print(const LinkedList* list);
+bool LL_IsEmpty(const LinkedList* list);
+void LL_Clear(LinkedList* list);
+void LL_Print(const LinkedList* list);
 
 #endif //LINKED_LIST_H

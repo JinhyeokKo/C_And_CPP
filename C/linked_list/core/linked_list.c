@@ -14,7 +14,7 @@ static Node* CreateNode(ElementType data) {
     return new_node;
 }
 
-LinkedList* SLL_Create(void) {
+LinkedList* LL_Create(void) {
     LinkedList* list = (LinkedList*)malloc(sizeof(LinkedList));
     if (!list) {
         return NULL;
@@ -25,28 +25,29 @@ LinkedList* SLL_Create(void) {
     return list;
 }
 
-void SLL_Destroy(LinkedList* list) {
+void LL_Destroy(LinkedList* list) {
     if (!list) return;
 
-    SLL_Clear(list);
+    LL_Clear(list);
     free(list);
 }
 
-void SLL_Clear(LinkedList* list) {
+void LL_Clear(LinkedList* list) {
     if (!list) return;
 
     Node* current = list->Head;
-    while (current) {
+
+    do {
         Node* next = current->NextNode;
         free(current);
         current = next;
-    }
+    } while (current && current != list->Head);
 
     list->Head = NULL;
     list->Count = 0;
 }
 
-ErrorCode SLL_Append(LinkedList* list, ElementType data) {
+ErrorCode LL_Append(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
     Node* tail = CreateNode(data);
@@ -74,7 +75,7 @@ ErrorCode SLL_Append(LinkedList* list, ElementType data) {
     return SUCCESS;
 }
 
-ErrorCode SLL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
+ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
@@ -95,7 +96,7 @@ ErrorCode SLL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
     return SUCCESS;
 }
 
-ErrorCode SLL_InsertHead(LinkedList* list, ElementType data) {
+ErrorCode LL_InsertHead(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
     Node* head = CreateNode(data);
@@ -109,7 +110,7 @@ ErrorCode SLL_InsertHead(LinkedList* list, ElementType data) {
     return SUCCESS;
 }
 
-ErrorCode SLL_Remove(LinkedList* list, size_t position) {
+ErrorCode LL_Remove(LinkedList* list, size_t position) {
     if (!list || !list->Head) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
@@ -141,7 +142,7 @@ ErrorCode SLL_Remove(LinkedList* list, size_t position) {
     return SUCCESS;
 }
 
-ErrorCode SLL_GetAt(const LinkedList* list, size_t position, ElementType* out_data) {
+ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_data) {
     if (!list || !out_data) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
@@ -154,26 +155,29 @@ ErrorCode SLL_GetAt(const LinkedList* list, size_t position, ElementType* out_da
     return SUCCESS;
 }
 
-size_t SLL_GetCount(const LinkedList* list) {
+size_t LL_GetCount(const LinkedList* list) {
     return list ? list->Count : 0;
 }
 
-bool SLL_IsEmpty(const LinkedList* list) {
+bool LL_IsEmpty(const LinkedList* list) {
     return !list || list->Count == 0;
 }
 
-void SLL_Print(const LinkedList* list) {
-    if (!list || SLL_IsEmpty(list)) {
+void LL_Print(const LinkedList* list) {
+    if (!list || LL_IsEmpty(list)) {
         printf("리스트가 비어있습니다.\n");
         return;
     }
 
     printf("리스트 내용: ");
     Node* current = list->Head;
-    while (current) {
+    do {
         printf("%d -> ", current->Data);
         current = current->NextNode;
-    }
-    printf("NULL\n");
+    }while(current && current!=list->Head);
+    // 단순 및 더블에서
+    // printf("NULL\n");
+    // 환형에서
+    printf("List Head\n");
     printf("총 노드 개수: %zu\n", list->Count);
 }

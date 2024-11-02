@@ -28,7 +28,7 @@ ErrorCode Menu_ProcessChoice(LinkedList* list, MenuChoice choice) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            return SLL_Append(list, value);
+            return LL_Append(list, value);
             
         case MENU_INSERT_AFTER:
             if (!Input_GetInteger("추가할 데이터: ", &value)) {
@@ -39,43 +39,43 @@ ErrorCode Menu_ProcessChoice(LinkedList* list, MenuChoice choice) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            return SLL_InsertAfter(list, position, value);
+            return LL_InsertAfter(list, position, value);
             
         case MENU_INSERT_HEAD:
             if (!Input_GetInteger("추가할 데이터: ", &value)) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            return SLL_InsertHead(list, value);
+            return LL_InsertHead(list, value);
             
         case MENU_REMOVE:
             if (!Input_GetInteger("삭제할 위치: ", &position)) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            return SLL_Remove(list, position);
+            return LL_Remove(list, position);
             
         case MENU_GET_AT:
             if (!Input_GetInteger("조회할 위치: ", &position)) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            result = SLL_GetAt(list, position, &data);
+            result = LL_GetAt(list, position, &data);
             if (result == SUCCESS) {
                 printf("%d번 위치의 데이터: %d\n", position, data);
             }
             return result;
             
         case MENU_GET_COUNT:
-            printf("현재 노드 개수: %zu\n", SLL_GetCount(list));
+            printf("현재 노드 개수: %zu\n", LL_GetCount(list));
             return SUCCESS;
             
         case MENU_PRINT_ALL:
-            SLL_Print(list);
+            LL_Print(list);
             return SUCCESS;
             
         case MENU_CLEAR:
-            SLL_Clear(list);
+            LL_Clear(list);
             printf("리스트가 초기화되었습니다.\n");
             return SUCCESS;
             

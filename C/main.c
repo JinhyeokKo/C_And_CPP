@@ -8,14 +8,13 @@ int main(void) {
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
-    LinkedList* list = SLL_Create();
+    LinkedList* list = LL_Create();
     if (!list) {
         fprintf(stderr, "리스트 생성에 실패했습니다.\n");
         return EXIT_FAILURE;
     }
 
     MenuChoice choice;
-    ErrorCode result;
 
     do {
         Menu_DisplayOptions();
@@ -27,7 +26,7 @@ int main(void) {
 
         if (choice == MENU_EXIT) break;
 
-        result = Menu_ProcessChoice(list, choice);
+        ErrorCode result = Menu_ProcessChoice(list, choice);
         if (result != SUCCESS) {
             switch (result) {
                 case ERROR_INVALID_PARAMETER:
@@ -48,7 +47,7 @@ int main(void) {
 
     } while (true);
 
-    SLL_Destroy(list);
+    LL_Destroy(list);
     printf("프로그램을 종료합니다.\n");
     return EXIT_SUCCESS;
 }
