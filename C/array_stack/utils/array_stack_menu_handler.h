@@ -9,7 +9,7 @@ typedef enum {
     MENU_PUSH,
     MENU_POP,
     MENU_PEEK,
-    MENU_GET_SIZE,
+    MENU_GET_COUNT,
     MENU_PRINT_ALL,
     MENU_CLEAR
 } AS_MenuChoice;

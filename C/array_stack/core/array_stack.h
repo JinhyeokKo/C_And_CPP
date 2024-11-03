@@ -3,12 +3,12 @@
 
 #include "common.h"
 
-typedef struct Array_Node{
+typedef struct AS_Node{
     ElementType Data;
-} Array_Node;
+} AS_Node;
 
 typedef struct {
-    Array_Node* Nodes;
+    AS_Node* Nodes;
     size_t Capacity;
     int Top;
 } ArrayStack;
@@ -21,7 +21,7 @@ void AS_Destroy(ArrayStack* stack);
 ErrorCode AS_Push(ArrayStack* stack, ElementType element);
 ErrorCode AS_Pop(ArrayStack* stack);
 ErrorCode AS_Peek(ArrayStack* stack);
-int AS_GetSize(const ArrayStack* stack);
+int AS_GetCount(const ArrayStack* stack);
 
 // 유틸리티 함수
 bool AS_IsEmpty(const ArrayStack* stack);

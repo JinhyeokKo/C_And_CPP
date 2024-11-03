@@ -8,7 +8,8 @@
 typedef enum {
     BOOT_EXIT = 0,
     BOOT_LINKED_LIST,
-    BOOT_ARRAY_STACK
+    BOOT_ARRAY_STACK,
+    BOOT_LINKED_LIST_STACK
 } BootChoice;
 
 void Boot_DisplayOptions(void);

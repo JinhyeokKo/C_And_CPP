@@ -31,6 +31,7 @@ set(BOOT_SOURCES
         utils/boot_handler.c
         linked_list/boot/linked_list_boot.c
         array_stack/boot/array_stack_boot.c
+        linked_list_stack/boot/linked_list_stack_boot.c
 )
 
 set(CORE_SOURCES
@@ -43,6 +44,7 @@ set(UTILS_SOURCES
         utils/input_handler.c
         linked_list/utils/linked_list_menu_handler.c
         array_stack/utils/array_stack_menu_handler.c
+        linked_list_stack/utils/linked_list_stack_menu_handler.c
 
 )
 

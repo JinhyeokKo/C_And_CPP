@@ -1,7 +1,7 @@
 #include "linked_list.h"
 
-static Linked_Node* CreateNode(ElementType data) {
-    Linked_Node* new_node = (Linked_Node*)malloc(sizeof(Linked_Node));
+static LL_Node* CreateNode(ElementType data) {
+    LL_Node* new_node = (LL_Node*)malloc(sizeof(LL_Node));
 
     new_node->Data = data;
     // 단순 및 더블에서
@@ -35,10 +35,10 @@ void LL_Destroy(LinkedList* list) {
 void LL_Clear(LinkedList* list) {
     if (!list || !list->Head) return;
 
-    Linked_Node* current = list->Head;
+    LL_Node* current = list->Head;
 
     do {
-        Linked_Node* next = current->NextNode;
+        LL_Node* next = current->NextNode;
         free(current);
         current = next;
     } while (current && current != list->Head);
@@ -50,13 +50,13 @@ void LL_Clear(LinkedList* list) {
 ErrorCode LL_Append(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
-    Linked_Node* tail = CreateNode(data);
+    LL_Node* tail = CreateNode(data);
     if (!tail) return ERROR_MEMORY_ALLOCATION;
 
     if (list->Head == NULL) {
         list->Head = tail;
     } else {
-        Linked_Node* current = list->Head;
+        LL_Node* current = list->Head;
         // 단순 및 더블에서
         // while (current->NextNode) {
         //     current = current->NextNode;
@@ -79,12 +79,12 @@ ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Linked_Node* current = list->Head;
+    LL_Node* current = list->Head;
     for (size_t i = 0; i < position; i++) {
         current = current->NextNode;
     }
 
-    Linked_Node* new_node = CreateNode(data);
+    LL_Node* new_node = CreateNode(data);
     if (!new_node) return ERROR_MEMORY_ALLOCATION;
 
     new_node->PrevNode = current;
@@ -99,7 +99,7 @@ ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
 ErrorCode LL_InsertHead(LinkedList* list, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
 
-    Linked_Node* head = CreateNode(data);
+    LL_Node* head = CreateNode(data);
     if (!head) return ERROR_MEMORY_ALLOCATION;
 
     if(list->Head == NULL) {
@@ -120,7 +120,7 @@ ErrorCode LL_Remove(LinkedList* list, size_t position) {
     if (!list || !list->Head) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Linked_Node* to_remove = list->Head;
+    LL_Node* to_remove = list->Head;
 
     if (position == 0) {
         // 단순 및 더블에서
@@ -130,7 +130,7 @@ ErrorCode LL_Remove(LinkedList* list, size_t position) {
         if (list->Count == 1) {
             list->Head = NULL;
         } else {
-            Linked_Node* tail = list->Head->PrevNode;
+            LL_Node* tail = list->Head->PrevNode;
             list->Head = list->Head->NextNode;
             list->Head->PrevNode = tail;
             tail->NextNode = list->Head;
@@ -152,7 +152,7 @@ ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_dat
     if (!list || !out_data) return ERROR_INVALID_PARAMETER;
     if (position >= list->Count) return ERROR_OUT_OF_RANGE;
 
-    Linked_Node* current = list->Head;
+    LL_Node* current = list->Head;
     for (size_t i = 0; i < position; i++) {
         current = current->NextNode;
     }
@@ -166,7 +166,7 @@ size_t LL_GetCount(const LinkedList* list) {
 }
 
 bool LL_IsEmpty(const LinkedList* list) {
-    return !list || list->Count == 0;
+    return list->Count == 0;
 }
 
 void LL_Print(const LinkedList* list) {
@@ -176,7 +176,7 @@ void LL_Print(const LinkedList* list) {
     }
 
     printf("리스트 내용: ");
-    Linked_Node* current = list->Head;
+    LL_Node* current = list->Head;
     do {
         printf("%d -> ", current->Data);
         current = current->NextNode;

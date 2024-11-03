@@ -1,8 +1,8 @@
-#include "array_stack_menu_handler.h"
+#include "linked_list_stack_menu_handler.h"
 #include "input_handler.h"
 
-void AS_Menu_DisplayOptions(void) {
-    printf("\n=== 배열 스택 관리 프로그램 ===\n");
+void LLS_Menu_DisplayOptions(void) {
+    printf("\n=== 연결 리스트 스택 관리 프로그램 ===\n");
     printf("1. 데이터 추가 (끝)\n");
     printf("2. 데이터 삭제\n");
     printf("3. 최상단 데이터 조회\n");
@@ -13,40 +13,40 @@ void AS_Menu_DisplayOptions(void) {
     printf("===============================\n");
 }
 
-ErrorCode AS_Menu_ProcessChoice(ArrayStack *stack, AS_MenuChoice choice) {
+ErrorCode LLS_Menu_ProcessChoice(LinkedListStack* stack, LLS_MenuChoice choice) {
     if(!stack) return ERROR_INVALID_PARAMETER;
 
-    int value;
+    char* value = NULL;
 
     switch(choice) {
         case MENU_PUSH:
-            if (!Input_GetInteger("추가할 데이터: ", &value)) {
+            if (!Input_GetString("추가할 데이터: ", &value)) {
                 printf("잘못된 입력입니다.\n");
                 return ERROR_INVALID_PARAMETER;
             }
-            return AS_Push(stack, value);
+        return LLS_Push(stack, value);
 
         case MENU_POP:
-            return AS_Pop(stack);
+            return LLS_Pop(stack);
 
         case MENU_PEEK:
-            return AS_Peek(stack);
+            return LLS_Peek(stack);
 
         case MENU_GET_COUNT:
-            printf("현재 데이터의 개수: %d", AS_GetCount(stack));
-            return SUCCESS;
+            printf("현재 데이터의 개수: %zu", LLS_GetCount(stack));
+        return SUCCESS;
 
         case MENU_PRINT_ALL:
-            AS_Print(stack);
-            return SUCCESS;
+            LLS_Print(stack);
+        return SUCCESS;
 
         case MENU_CLEAR:
-            AS_Clear(stack);
-            printf("스택이 초기화되었습니다.\n");
-            return SUCCESS;
+            LLS_Clear(stack);
+        printf("스택이 초기화되었습니다.\n");
+        return SUCCESS;
 
         default:
             printf("잘못된 메뉴 선택입니다.\n");
-            return ERROR_INVALID_PARAMETER;
+        return ERROR_INVALID_PARAMETER;
     }
 }
