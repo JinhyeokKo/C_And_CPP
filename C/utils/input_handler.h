@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-bool Input_GetInteger(const char* prompt, int* value);
-bool Input_GetString(const char* prompt, char** buffer);
+bool Input_GetInteger(const char* prompt, ElementType* value);
+bool Input_GetString(const char* prompt, ElementType* buffer);
 void Input_ClearBuffer(void);
 void Input_WaitForEnter(void);
 

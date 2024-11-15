@@ -4,14 +4,14 @@
 #include "common.h"
 
 typedef struct LL_Node {
-    ElementType Data;
+    ElementType data;
     struct LL_Node *PrevNode;
     struct LL_Node *NextNode;
 } LL_Node;
 
 typedef struct {
-    LL_Node* Head;
-    size_t Count;
+    LL_Node* head;
+    size_t count;
 } LinkedList;
 
 // 생성자/소멸자
@@ -20,10 +20,10 @@ void LL_Destroy(LinkedList* list);
 
 // 기본 연산
 ErrorCode LL_Append(LinkedList* list, ElementType data);
-ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data);
+ErrorCode LL_InsertAfter(LinkedList* list, ElementType position, ElementType data);
 ErrorCode LL_InsertHead(LinkedList* list, ElementType data);
-ErrorCode LL_Remove(LinkedList* list, size_t position);
-ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_data);
+ErrorCode LL_Remove(LinkedList* list, ElementType position);
+ErrorCode LL_GetAt(const LinkedList* list, ElementType position);
 size_t LL_GetCount(const LinkedList* list);
 
 // 유틸리티 함수

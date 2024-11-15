@@ -15,37 +15,29 @@ endif()
 include_directories(
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/utils
-        ${PROJECT_SOURCE_DIR}/linked_list/boot
         ${PROJECT_SOURCE_DIR}/linked_list/core
-        ${PROJECT_SOURCE_DIR}/linked_list/utils
-        ${PROJECT_SOURCE_DIR}/array_stack/boot
         ${PROJECT_SOURCE_DIR}/array_stack/core
-        ${PROJECT_SOURCE_DIR}/array_stack/utils
-        ${PROJECT_SOURCE_DIR}/linked_list_stack/boot
         ${PROJECT_SOURCE_DIR}/linked_list_stack/core
-        ${PROJECT_SOURCE_DIR}/linked_list_stack/utils
+        ${PROJECT_SOURCE_DIR}/circular_queue/core
+        ${PROJECT_SOURCE_DIR}/linked_queue/core
 )
 
 # 소스 파일 목록 설정
 set(BOOT_SOURCES
         utils/boot_handler.c
-        linked_list/boot/linked_list_boot.c
-        array_stack/boot/array_stack_boot.c
-        linked_list_stack/boot/linked_list_stack_boot.c
 )
 
 set(CORE_SOURCES
         linked_list/core/linked_list.c
         array_stack/core/array_stack.c
         linked_list_stack/core/linked_list_stack.c
+        circular_queue/core/circular_queue.c
+        linked_queue/core/linked_queue.c
 )
 
 set(UTILS_SOURCES
         utils/input_handler.c
-        linked_list/utils/linked_list_menu_handler.c
-        array_stack/utils/array_stack_menu_handler.c
-        linked_list_stack/utils/linked_list_stack_menu_handler.c
-
+        utils/menu_handler.c
 )
 
 # 라이브러리 생성

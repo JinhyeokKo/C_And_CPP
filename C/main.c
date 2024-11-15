@@ -12,7 +12,7 @@ int main(void) {
     do {
         Boot_DisplayOptions();
 
-        if (!Input_GetInteger("선택: ", (int*)&choice)) {
+        if (!Input_GetInteger("선택: ", (ElementType*)&choice)) {
             printf("잘못된 입력입니다. 다시 시도해주세요.\n");
             continue;
         }

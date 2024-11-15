@@ -1,33 +1,41 @@
 #include "input_handler.h"
 
-bool Input_GetInteger(const char* prompt, int* value) {
+bool Input_GetInteger(const char* prompt, ElementType* value) {
+    char* temp = malloc(sizeof(char*));
+    if(!temp) return false;
+
     printf("%s", prompt);
-    
-    if (fscanf(stdin,"%d", value) != 1) {
-        Input_ClearBuffer();
+
+    if(fgets(temp, sizeof(temp), stdin) == NULL) {
+        free(temp);
         return false;
     }
-    
-    Input_ClearBuffer();
+
+    long swap = strtol(temp, NULL, 10);
+    free(temp);
+    value->integer = (int)swap;
+
     return true;
 }
 
-bool Input_GetString(const char* prompt, char** buffer) {
+bool Input_GetString(const char* prompt, ElementType* value) {
+    char* buffer = NULL;
     size_t buffer_size = 0;
 
     printf("%s", prompt);
 
-    ssize_t read = getline(buffer, &buffer_size, stdin);
+    ssize_t read = getline(&buffer, &buffer_size, stdin);
 
     if (read == -1) {
+        free(buffer);
         return false;
     }
 
-    char* str = *buffer;
-
-    if (str[read - 1] == '\n') {
-        str[read - 1] = '\0';
+    if (buffer[read - 1] == '\n') {
+        buffer[read - 1] = '\0';
     }
+
+    value->string = buffer;
 
     return true;
 }

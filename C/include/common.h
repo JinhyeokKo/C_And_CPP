@@ -7,7 +7,10 @@
 #include <assert.h>
 #include <string.h>
 
-typedef int ElementType;
+typedef struct {
+    int integer;
+    char* string;
+} ElementType;
 
 // 에러 코드 정의
 typedef enum {

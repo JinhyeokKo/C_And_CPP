@@ -2,9 +2,16 @@
 
 ArrayStack* AS_Create(size_t capacity) {
     ArrayStack* stack = (ArrayStack*)malloc(sizeof(ArrayStack));
-    stack->Nodes = (AS_Node*)malloc(sizeof(AS_Node) * capacity);
-    stack->Capacity = capacity;
-    stack->Top = -1;
+    if (!stack) {
+        return NULL;
+    }
+    stack->nodes = (AS_Node*)malloc(sizeof(AS_Node) * capacity);
+    if (!stack->nodes) {
+        free(stack);
+    }else {
+        stack->capacity = capacity;
+        stack->top = -1;
+    }
     return stack;
 }
 
@@ -12,21 +19,21 @@ void AS_Destroy(ArrayStack* stack) {
     if(!stack) return;
 
     AS_Clear(stack);
-    free(stack->Nodes);
+    free(stack->nodes);
     free(stack);
 }
 
 void AS_Clear(ArrayStack* stack) {
     if(!stack) return;
-    stack->Top = -1;
+    stack->top = -1;
 }
 
 ErrorCode AS_Push(ArrayStack* stack, ElementType data) {
     if (!stack) return ERROR_INVALID_PARAMETER;
     if (AS_IsFull(stack)) return ERROR_OUT_OF_RANGE;
 
-    stack->Top++;
-    stack->Nodes[stack->Top].Data = data;
+    stack->top++;
+    stack->nodes[stack->top].data = data;
     return SUCCESS;
 }
 
@@ -34,8 +41,8 @@ ErrorCode AS_Pop(ArrayStack* stack) {
     if (!stack) return ERROR_INVALID_PARAMETER;
     if (AS_IsEmpty(stack)) return ERROR_OUT_OF_RANGE;
 
-    int position = stack->Top--;
-    printf("제거된 값: %d", stack->Nodes[position].Data);
+    int position = stack->top--;
+    printf("제거된 값: %d", stack->nodes[position].data.integer);
     return SUCCESS;
 }
 
@@ -43,12 +50,12 @@ ErrorCode AS_Peek(ArrayStack* stack) {
     if (!stack) return ERROR_INVALID_PARAMETER;
     if (AS_IsEmpty(stack)) return ERROR_OUT_OF_RANGE;
 
-    printf("최상단의 데이터: %d",stack->Nodes[stack->Top].Data);
+    printf("최상단의 데이터: %d",stack->nodes[stack->top].data.integer);
     return SUCCESS;
 }
 
-int AS_GetCount(const ArrayStack* stack) {
-    return stack ? stack->Top + 1 : 0;
+size_t AS_GetCount(const ArrayStack* stack) {
+    return stack ? stack->top + 1 : 0;
 }
 
 void AS_Print(const ArrayStack* stack) {
@@ -58,20 +65,20 @@ void AS_Print(const ArrayStack* stack) {
     }
 
     printf("스택 내용:");
-    for (int i = stack->Top; i >=0 ; i--) {
-        printf("%d", stack->Nodes[i].Data);
+    for (int i = stack->top; i >=0 ; i--) {
+        printf("%d", stack->nodes[i].data.integer);
         if (i) {
             printf(" -> ");
         }
     }
-    printf("\n총 데이터 개수: %d\n", stack->Top + 1);
-    printf("스택의 크기: %zu\n", stack->Capacity);
+    printf("\n총 데이터 개수: %zu\n", AS_GetCount(stack));
+    printf("스택의 크기: %zu\n", stack->capacity);
 }
 
 bool AS_IsEmpty(const ArrayStack* stack) {
-    return stack->Top == -1;
+    return stack->top == -1;
 }
 
 bool AS_IsFull(const ArrayStack* stack) {
-    return stack->Top == stack->Capacity - 1;
+    return stack->top == stack->capacity - 1;
 }

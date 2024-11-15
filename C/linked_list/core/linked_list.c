@@ -2,8 +2,11 @@
 
 static LL_Node* CreateNode(ElementType data) {
     LL_Node* new_node = (LL_Node*)malloc(sizeof(LL_Node));
+    if(!new_node) {
+        return NULL;
+    }
 
-    new_node->Data = data;
+    new_node->data = data;
     // 단순 및 더블에서
     // new_node->PrevNode = NULL;
     // new_node->NextNode = NULL;
@@ -20,8 +23,8 @@ LinkedList* LL_Create(void) {
         return NULL;
     }
 
-    list->Head = NULL;
-    list->Count = 0;
+    list->head = NULL;
+    list->count = 0;
     return list;
 }
 
@@ -33,18 +36,18 @@ void LL_Destroy(LinkedList* list) {
 }
 
 void LL_Clear(LinkedList* list) {
-    if (!list || !list->Head) return;
+    if (!list || !list->head) return;
 
-    LL_Node* current = list->Head;
+    LL_Node* current = list->head;
 
     do {
         LL_Node* next = current->NextNode;
         free(current);
         current = next;
-    } while (current && current != list->Head);
+    } while (current && current != list->head);
 
-    list->Head = NULL;
-    list->Count = 0;
+    list->head = NULL;
+    list->count = 0;
 }
 
 ErrorCode LL_Append(LinkedList* list, ElementType data) {
@@ -53,10 +56,10 @@ ErrorCode LL_Append(LinkedList* list, ElementType data) {
     LL_Node* tail = CreateNode(data);
     if (!tail) return ERROR_MEMORY_ALLOCATION;
 
-    if (list->Head == NULL) {
-        list->Head = tail;
+    if (list->head == NULL) {
+        list->head = tail;
     } else {
-        LL_Node* current = list->Head;
+        LL_Node* current = list->head;
         // 단순 및 더블에서
         // while (current->NextNode) {
         //     current = current->NextNode;
@@ -71,16 +74,16 @@ ErrorCode LL_Append(LinkedList* list, ElementType data) {
         current->PrevNode = tail;
     }
 
-    list->Count++;
+    list->count++;
     return SUCCESS;
 }
 
-ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
+ErrorCode LL_InsertAfter(LinkedList* list, ElementType position, ElementType data) {
     if (!list) return ERROR_INVALID_PARAMETER;
-    if (position >= list->Count) return ERROR_OUT_OF_RANGE;
+    if ((size_t)position.integer >= list->count) return ERROR_OUT_OF_RANGE;
 
-    LL_Node* current = list->Head;
-    for (size_t i = 0; i < position; i++) {
+    LL_Node* current = list->head;
+    for (int i = 0; i < position.integer; i++) {
         current = current->NextNode;
     }
 
@@ -91,7 +94,7 @@ ErrorCode LL_InsertAfter(LinkedList* list, size_t position, ElementType data) {
     new_node->NextNode = current->NextNode;
     new_node->NextNode->PrevNode = new_node;
     current->NextNode = new_node;
-    list->Count++;
+    list->count++;
 
     return SUCCESS;
 }
@@ -102,41 +105,41 @@ ErrorCode LL_InsertHead(LinkedList* list, ElementType data) {
     LL_Node* head = CreateNode(data);
     if (!head) return ERROR_MEMORY_ALLOCATION;
 
-    if(list->Head == NULL) {
-        list->Head = head;
+    if(list->head == NULL) {
+        list->head = head;
     }else {
-        head->NextNode = list->Head;
-        head->PrevNode = list->Head->PrevNode;
-        list->Head->PrevNode->NextNode = head;
-        list->Head->PrevNode = head;
-        list->Head = head;
+        head->NextNode = list->head;
+        head->PrevNode = list->head->PrevNode;
+        list->head->PrevNode->NextNode = head;
+        list->head->PrevNode = head;
+        list->head = head;
     }
 
-    list->Count++;
+    list->count++;
     return SUCCESS;
 }
 
-ErrorCode LL_Remove(LinkedList* list, size_t position) {
-    if (!list || !list->Head) return ERROR_INVALID_PARAMETER;
-    if (position >= list->Count) return ERROR_OUT_OF_RANGE;
+ErrorCode LL_Remove(LinkedList* list, ElementType position) {
+    if (!list || !list->head) return ERROR_INVALID_PARAMETER;
+    if ((size_t)position.integer >= list->count) return ERROR_OUT_OF_RANGE;
 
-    LL_Node* to_remove = list->Head;
+    LL_Node* to_remove = list->head;
 
-    if (position == 0) {
+    if (position.integer == 0) {
         // 단순 및 더블에서
-        // list->Head = list->Head->NextNode;
-        // list->Head->PrevNode = NULL;
+        // list->head = list->head->NextNode;
+        // list->head->PrevNode = NULL;
         // 환형에서
-        if (list->Count == 1) {
-            list->Head = NULL;
+        if (list->count == 1) {
+            list->head = NULL;
         } else {
-            LL_Node* tail = list->Head->PrevNode;
-            list->Head = list->Head->NextNode;
-            list->Head->PrevNode = tail;
-            tail->NextNode = list->Head;
+            LL_Node* tail = list->head->PrevNode;
+            list->head = list->head->NextNode;
+            list->head->PrevNode = tail;
+            tail->NextNode = list->head;
         }
     } else {
-        for (size_t i = 0; i < position; i++) {
+        for (size_t i = 0; i < (size_t)position.integer; i++) {
             to_remove = to_remove->NextNode;
         }
         to_remove->PrevNode->NextNode = to_remove->NextNode;
@@ -144,29 +147,28 @@ ErrorCode LL_Remove(LinkedList* list, size_t position) {
     }
 
     free(to_remove);
-    list->Count--;
+    list->count--;
     return SUCCESS;
 }
 
-ErrorCode LL_GetAt(const LinkedList* list, size_t position, ElementType* out_data) {
-    if (!list || !out_data) return ERROR_INVALID_PARAMETER;
-    if (position >= list->Count) return ERROR_OUT_OF_RANGE;
+ErrorCode LL_GetAt(const LinkedList* list, ElementType position) {
+    if (!list) return ERROR_INVALID_PARAMETER;
+    if ((size_t)position.integer >= list->count) return ERROR_OUT_OF_RANGE;
 
-    LL_Node* current = list->Head;
-    for (size_t i = 0; i < position; i++) {
+    LL_Node* current = list->head;
+    for (size_t i = 0; i < (size_t)position.integer; i++) {
         current = current->NextNode;
     }
-
-    *out_data = current->Data;
+    printf("%zu번 위치의 데이터: %d\n", (size_t)position.integer, (int)current->data.integer);
     return SUCCESS;
 }
 
 size_t LL_GetCount(const LinkedList* list) {
-    return list ? list->Count : 0;
+    return list ? list->count : 0;
 }
 
 bool LL_IsEmpty(const LinkedList* list) {
-    return list->Count == 0;
+    return list->count == 0;
 }
 
 void LL_Print(const LinkedList* list) {
@@ -176,14 +178,14 @@ void LL_Print(const LinkedList* list) {
     }
 
     printf("리스트 내용: ");
-    LL_Node* current = list->Head;
+    LL_Node* current = list->head;
     do {
-        printf("%d -> ", current->Data);
+        printf("%d -> ", (int)current->data.integer);
         current = current->NextNode;
-    }while(current && current!=list->Head);
+    }while(current && current!=list->head);
     // 단순 및 더블에서
     // printf("NULL\n");
     // 환형에서
-    printf("List Head\n");
-    printf("총 노드 개수: %zu\n", list->Count);
+    printf("List head\n");
+    printf("총 노드 개수: %zu\n", list->count);
 }
